@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: rentalservice-postgres
+    environment:
+      POSTGRES_DB: rental_service
+      POSTGRES_USER: rental_user
+      POSTGRES_PASSWORD: rental_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rental_user -d rental_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: rentalservice-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pg_data:
